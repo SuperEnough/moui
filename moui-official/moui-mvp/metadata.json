@@ -1,0 +1,9 @@
+{
+  "name": "MoUI",
+  "description": "Premium self-generating interface. Your UI for everything.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera",
+    "geolocation"
+  ]
+}

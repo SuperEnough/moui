@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --primary: 262 83% 58%;
+    --accent: 210 100% 50%;
+  }
+
+  body {
+    @apply bg-black text-white font-sans overflow-hidden;
+    background-image: 
+      radial-gradient(circle at 50% -20%, rgba(124, 58, 237, 0.15), transparent 80%),
+      radial-gradient(circle at -20% 50%, rgba(59, 130, 246, 0.05), transparent 50%);
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-2xl border border-white/10;
+  }
+  
+  .glass-premium {
+    @apply bg-black/40 backdrop-blur-3xl border border-white/5 shadow-[0_0_80px_-20px_rgba(124,58,237,0.1)];
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-white to-white/40;
+  }
+}
+
+/* Custom Scrollbar for Premium Feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
