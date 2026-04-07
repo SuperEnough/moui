@@ -10,12 +10,12 @@ export function Workspace({ children }: WorkspaceProps) {
   const { isEditMode, activeComponentId, setActiveComponentId } = useAppStore();
 
   return (
-    <div className={`relative h-full w-full transition-all duration-500 ${isEditMode ? 'scale-[0.98]' : 'scale-100'}`}>
+    <div className={`relative h-full w-full transition-all duration-500`}>
       {/* The actual App content */}
-      <div className="h-full w-full overflow-auto rounded-3xl border border-white/5 bg-white/5 shadow-inner">
+      <div className="h-full w-full overflow-auto no-scrollbar">
         {children || (
-          <div className="flex h-full items-center justify-center text-white/20 italic">
-            No application active. Use the Command Lattice to generate one.
+          <div className="flex h-full items-center justify-center text-white/5 italic font-light tracking-widest uppercase text-xs">
+            Materializing vision...
           </div>
         )}
       </div>

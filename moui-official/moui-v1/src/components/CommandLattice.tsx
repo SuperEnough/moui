@@ -1,152 +1,130 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Sparkles, LayoutGrid, Settings, Edit3, X, ArrowLeft } from 'lucide-react';
+import { Search, LayoutGrid, Settings, Pencil, ArrowRight, Sparkles } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
 export function CommandLattice() {
   const { 
     isLatticeExpanded, 
     setLatticeExpanded, 
-    setCurrentApp, 
     isEditMode, 
     setEditMode,
-    activeComponentId,
-    setActiveComponentId
+    currentApp,
+    setCurrentApp
   } = useAppStore();
-  const [query, setQuery] = useState('');
+  
+  const [inputValue, setInputValue] = useState('');
 
   const handleGenerate = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
-    
-    // Simulate generation and morphing
-    setCurrentApp('simulated_app');
+    if (!inputValue.trim()) return;
+    // Simulate generation for now
+    setCurrentApp('generated_app');
     setLatticeExpanded(false);
   };
 
-  const handleEditSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-    // Handle Delta Patch logic here
-    console.log(`Patching ${activeComponentId} with: ${query}`);
-    setQuery('');
-  };
-
   return (
-    <AnimatePresence>
+    <div className={`fixed left-1/2 z-50 -translate-x-1/2 transition-all duration-700 ${
+      !currentApp ? 'top-[65%] w-full max-w-xl' : 'bottom-12'
+    }`}>
       <motion.div
         layout
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className={`fixed z-50 flex items-center justify-center transition-all ${
-          isLatticeExpanded
-            ? 'inset-0 bg-black/40 backdrop-blur-sm'
-            : 'bottom-8 left-1/2 -translate-x-1/2'
-        }`}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="flex items-center gap-2 rounded-full border border-white/10 bg-black/80 p-1.5 shadow-2xl backdrop-blur-2xl"
       >
-        <motion.div
-          layout
-          className={`flex overflow-hidden rounded-[2rem] border border-white/10 bg-black/60 shadow-2xl backdrop-blur-md ${
-            isLatticeExpanded || isEditMode ? 'w-[600px] flex-col' : 'w-auto flex-row items-center p-2'
-          }`}
-        >
-          {isLatticeExpanded ? (
-            <form onSubmit={handleGenerate} className="flex flex-col w-full">
-              <div className="flex items-center border-b border-white/10 p-4">
-                <Search className="mr-3 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Describe the UI you want to build..."
-                  className="flex-1 bg-transparent text-lg text-white placeholder-gray-500 outline-none"
-                  autoFocus
-                />
-                <button
-                  type="submit"
-                  disabled={!query.trim()}
-                  className="ml-3 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 disabled:opacity-50 transition-colors"
-                >
-                  <Sparkles className="h-5 w-5" />
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2 p-4 text-xs text-gray-400">
-                <span className="rounded-md border border-white/10 px-2 py-1">"Create a SaaS dashboard..."</span>
-                <span className="rounded-md border border-white/10 px-2 py-1">"Build a Kanban board..."</span>
-              </div>
-            </form>
-          ) : isEditMode ? (
-            <form onSubmit={handleEditSubmit} className="flex flex-col w-full">
-              <div className="flex items-center border-b border-white/10 p-4">
-                <button 
-                  type="button"
-                  onClick={() => {
-                    setEditMode(false);
-                    setActiveComponentId(null);
-                  }}
-                  className="mr-3 rounded-full p-2 text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
-                >
-                  <ArrowLeft className="h-5 w-5" />
-                </button>
-                <div className="flex-1">
-                  <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-blue-400">
-                    {activeComponentId ? `Target: ${activeComponentId}` : 'Select a component to edit'}
-                  </span>
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder={activeComponentId ? "What should change?" : "Click a component in the workspace..."}
-                    className="w-full bg-transparent text-lg text-white placeholder-gray-500 outline-none"
-                    autoFocus
-                    disabled={!activeComponentId}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={!query.trim() || !activeComponentId}
-                  className="ml-3 rounded-full bg-blue-600 p-2 text-white hover:bg-blue-500 disabled:opacity-50 transition-colors shadow-[0_0_15px_rgba(37,99,235,0.4)]"
-                >
-                  <Edit3 className="h-5 w-5" />
-                </button>
-              </div>
-            </form>
+        <AnimatePresence mode="popLayout">
+          {!currentApp || isLatticeExpanded ? (
+            <motion.form
+              key="expanded-input"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onSubmit={handleGenerate}
+              className="flex w-full items-center gap-3 pl-4 pr-2"
+            >
+              <Search size={18} className="text-white/40" />
+              <input
+                autoFocus
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder={currentApp ? "Iterate on this UI..." : "Describe the UI you want to build..."}
+                className="flex-1 bg-transparent py-2 text-sm text-white outline-none placeholder:text-white/20"
+              />
+              <button
+                type="submit"
+                className="rounded-full bg-white/10 p-2 text-white/60 transition-colors hover:bg-white/20 hover:text-white"
+              >
+                {currentApp ? <ArrowRight size={18} /> : <Sparkles size={18} />}
+              </button>
+            </motion.form>
           ) : (
-            <div className="flex items-center gap-2">
-              <button 
+            <motion.div
+              key="collapsed-cluster"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="flex items-center gap-1"
+            >
+              <button
                 onClick={() => setLatticeExpanded(true)}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-all"
+                className="rounded-full p-3 text-white/40 transition-all hover:bg-white/10 hover:text-white"
                 title="Search"
               >
-                <Search className="h-5 w-5" />
+                <Search size={20} />
               </button>
-              <div className="w-px h-6 bg-white/10"></div>
-              <button 
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-all"
+              
+              <div className="h-4 w-px bg-white/10 mx-1"></div>
+
+              <button
+                className="rounded-full p-3 text-white/40 transition-all hover:bg-white/10 hover:text-white"
                 title="Gallery"
               >
-                <LayoutGrid className="h-5 w-5" />
+                <LayoutGrid size={20} />
               </button>
-              <button 
-                onClick={() => setEditMode(true)}
-                className="flex h-10 px-4 items-center justify-center rounded-full bg-blue-600/20 text-blue-400 hover:bg-blue-600/40 hover:text-white transition-all"
-                title="Edit Mode (ACT)"
+
+              <button
+                onClick={() => setEditMode(!isEditMode)}
+                className={`rounded-full p-3 transition-all ${
+                  isEditMode 
+                    ? 'bg-blue-600/20 text-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.3)]' 
+                    : 'text-white/40 hover:bg-white/10 hover:text-white'
+                }`}
+                title="ACT (Edit Mode)"
               >
-                <Edit3 className="mr-2 h-4 w-4" />
-                <span className="text-sm font-medium">Edit Mode</span>
+                <Pencil size={20} />
               </button>
-              <button 
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-all"
+
+              <button
+                className="rounded-full p-3 text-white/40 transition-all hover:bg-white/10 hover:text-white"
                 title="Settings"
               >
-                <Settings className="h-5 w-5" />
+                <Settings size={20} />
               </button>
-            </div>
+            </motion.div>
           )}
-        </motion.div>
+        </AnimatePresence>
       </motion.div>
-    </AnimatePresence>
+
+      {/* Suggestion hints in Hero Mode */}
+      {!currentApp && (
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-6 flex w-full justify-center gap-3 px-4 overflow-x-auto no-scrollbar"
+        >
+          {['"Create a SaaS dashboard..."', '"Build a Kanban board..."'].map((hint) => (
+            <button
+              key={hint}
+              className="whitespace-nowrap rounded-full border border-white/5 bg-white/5 px-4 py-1.5 text-[10px] font-medium text-white/30 backdrop-blur-sm transition-all hover:border-white/10 hover:bg-white/10 hover:text-white/60"
+            >
+              {hint}
+            </button>
+          ))}
+        </motion.div>
+      )}
+    </div>
   );
 }

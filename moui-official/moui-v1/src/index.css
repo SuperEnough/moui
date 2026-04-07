@@ -28,6 +28,31 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-white to-white/40;
   }
+
+  .grid-pattern {
+    background-image: 
+      linear-gradient(to right, rgba(128, 128, 128, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(128, 128, 128, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .chromatic-text {
+    @apply relative inline-block;
+  }
+
+  .chromatic-text::before,
+  .chromatic-text::after {
+    content: attr(data-text);
+    @apply absolute inset-0 select-none pointer-events-none opacity-40 blur-[0.5px];
+  }
+
+  .chromatic-text::before {
+    @apply text-blue-500 -translate-x-[1px];
+  }
+
+  .chromatic-text::after {
+    @apply text-red-500 translate-x-[1px];
+  }
 }
 
 /* Custom Scrollbar for Premium Feel */
