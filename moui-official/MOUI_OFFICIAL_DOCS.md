@@ -38,7 +38,33 @@ The MoUI Runtime intelligently decides the rendering strategy:
 
 ---
 
+## 🛠 Project Status & Roadmap
+
+### Phase 1: Foundation (COMPLETED)
+- [x] Manual Scaffold of MoUI v1 (Vite + React + TS).
+- [x] Tailwind v4 integration with Atomic Precision tokens.
+- [x] Base Design System (Onyx Aesthetics).
+
+### Phase 2: Orchestration (IN PROGRESS)
+- [x] Metamorphic Command Lattice implementation (The Void/Orbit states).
+- [x] Flux State Management (Zustand) integration.
+- [x] ACT (Active Component Target) Selection Layer & Selectable HOC.
+- [x] Senior Guardian System Prompting architecture.
+- [ ] Instruction Routing & Delta Patching logic implementation.
+- [ ] Dynamic Component Hot-Swap engine (The Flux Swap).
+
+---
+
+## 🏗 Flux Engine Detail
+The Flux Engine manages the lifecycle of generated UIs:
+- **State Store**: Centralized Zustand store for tracking `isEditMode`, `activeComponentId`, and `currentAppCode`.
+- **Selectable Wrapper**: A higher-order component that enables "point-and-patch" editing.
+- **Instruction Router**: Determines if a query is a "Global Request" (e.g., "Build a new app") or a "Local Patch" (e.g., "Change this header to blue").
+
+---
+
 ## 🛠 Usage & Interaction Guide
+... (rest of the file)
 
 ### Command Bar Shortcuts
 - `Cmd + K`: Summon/Hide the Command Lattice.
